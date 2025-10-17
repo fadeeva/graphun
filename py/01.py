@@ -1,4 +1,5 @@
 import pygame
+import random
 
 
 SETTINGS = {
@@ -10,26 +11,46 @@ SETTINGS = {
 }
 
 COLORS = {
-    'red'   : (249, 102, 56),
-    'blue'  : (48, 96, 249),
-    'green' : (52, 206, 147),
-    'yellow': (255, 204, 95),
-    
     'black' : (36, 52, 53),
     'white' : (234, 228, 214)
 }
 
+SQUARE_COLORS = {
+    'red'   : (249, 102, 56),
+    'blue'  : (48, 96, 249),
+    'green' : (52, 206, 147),
+    'yellow': (255, 204, 95),
+}
+
+BORDER_RADIUS = 8
 
 def draw_background()->None:
     game_display.fill(COLORS['white'])
 
+    
+def get_random_color():
+    return SQUARE_COLORS[random.choice(list(SQUARE_COLORS.keys()))]
+    
+    
+def draw_square()->None:
+    X = random.randint(0, 750)
+    Y = random.randint(0, 550)
+    color = get_random_color()
+    pygame.draw.rect(game_display, color, (X, Y, 50, 50), 0, BORDER_RADIUS)
+    
 
 def loop()->None:
+    i = 0
     while True:
+        i+=1
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+        if i<1_000:
+            draw_square()
+            pygame.time.wait(100)
+        
         pygame.display.update()
 
 
