@@ -22,7 +22,10 @@ SQUARE_COLORS = {
     'yellow': (255, 204, 95),
 }
 
-BORDER_RADIUS = 8
+PROPS = {
+    'border_radius': 8,
+}
+
 
 def draw_background()->None:
     game_display.fill(COLORS['white'])
@@ -35,10 +38,27 @@ def get_random_color():
 def draw_square()->None:
     X = random.randint(0, 750)
     Y = random.randint(0, 550)
+    size = random.randint(10, 200)
     color = get_random_color()
-    pygame.draw.rect(game_display, color, (X, Y, 50, 50), 0, BORDER_RADIUS)
+    pygame.draw.rect(game_display, color, (X, Y, size, size), 0, PROPS['border_radius'])
+
+
+def draw_circle()->None:
+    X = random.randint(25, 775)
+    Y = random.randint(25, 575)
+    radius = random.randint(10, 200)
+    color = get_random_color()
+    pygame.draw.circle(game_display, color, (X, Y), radius)
     
 
+def draw_figure()->None:
+    figures = {
+        'circle': draw_circle,
+        'square': draw_square,
+    }
+    figures[random.choice(list(figures.keys()))]()
+    
+    
 def loop()->None:
     i = 0
     while True:
@@ -47,8 +67,10 @@ def loop()->None:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-        if i<1_000:
-            draw_square()
+        if i<100:
+#            draw_square()
+#            draw_circle()
+            draw_figure()
             pygame.time.wait(100)
         
         pygame.display.update()
