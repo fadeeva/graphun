@@ -1,5 +1,6 @@
 import pygame
 import random
+import math
 
 
 SETTINGS = {
@@ -62,8 +63,28 @@ def draw_segment()->None:
     POS['end_pos'] = end_pos
     
     width = random.randint(1, 10)
-    pygame.draw.line(surface, get_random_color(), start_pos, end_pos, width)
+#    pygame.draw.line(surface, get_random_color(), start_pos, end_pos, width)
+    pygame.draw.aaline(surface, get_random_color(), start_pos, end_pos)
     
+
+ANGLE = { 'end_angle': () }
+def draw_curve()->None:
+    width = random.randint(1, 10)
+    color = get_random_color()
+    
+    w, h = random.randint(0, 800), random.randint(0, 600)
+    X, Y = random.randint(0, 800-int(w/2)), random.randint(0, 600-int(h/2))
+    arc_rect = pygame.Rect(X, Y, w, h)
+    
+    if ANGLE['end_angle']:
+        start_angle = ANGLE['end_angle']
+    else:
+        start_angle = random.randint(0, 360)*math.pi/180
+        
+    stop_angle = random.randint(0, 360)*math.pi/180
+    ANGLE['end_angle'] = stop_angle
+    
+    pygame.draw.arc(surface, color, arc_rect, start_angle, stop_angle, width)
 
 
 def draw_figure()->None:
@@ -87,6 +108,7 @@ def loop()->None:
 #            draw_circle()
 #            draw_figure()
             draw_segment()
+#            draw_curve()
             pygame.time.wait(100)
         
         pygame.display.update()
