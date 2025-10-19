@@ -28,7 +28,7 @@ PROPS = {
 
 
 def draw_background()->None:
-    game_display.fill(COLORS['white'])
+    surface.fill(COLORS['white'])
 
     
 def get_random_color():
@@ -40,7 +40,7 @@ def draw_square()->None:
     Y = random.randint(0, 550)
     size = random.randint(10, 200)
     color = get_random_color()
-    pygame.draw.rect(game_display, color, (X, Y, size, size), 0, PROPS['border_radius'])
+    pygame.draw.rect(surface, color, (X, Y, size, size), 0, PROPS['border_radius'])
 
 
 def draw_circle()->None:
@@ -48,8 +48,23 @@ def draw_circle()->None:
     Y = random.randint(25, 575)
     radius = random.randint(10, 200)
     color = get_random_color()
-    pygame.draw.circle(game_display, color, (X, Y), radius)
+    pygame.draw.circle(surface, color, (X, Y), radius)
+
+
+POS = { 'end_pos': () }
+def draw_segment()->None:
+    if POS['end_pos']:
+        start_pos = POS['end_pos']
+    else:
+        start_pos = (random.randint(0, 800), random.randint(0, 600))
     
+    end_pos = (random.randint(0, 800), random.randint(0, 600))
+    POS['end_pos'] = end_pos
+    
+    width = random.randint(1, 10)
+    pygame.draw.line(surface, get_random_color(), start_pos, end_pos, width)
+    
+
 
 def draw_figure()->None:
     figures = {
@@ -70,7 +85,8 @@ def loop()->None:
         if i<100:
 #            draw_square()
 #            draw_circle()
-            draw_figure()
+#            draw_figure()
+            draw_segment()
             pygame.time.wait(100)
         
         pygame.display.update()
@@ -80,9 +96,8 @@ def loop()->None:
 if __name__ == '__main__':
     pygame.init()
     
-    game_display = pygame.display\
-                         .set_mode((SETTINGS['screen']['width'],
-                                    SETTINGS['screen']['height']))
+    surface = pygame.display.set_mode((SETTINGS['screen']['width'],
+                                       SETTINGS['screen']['height']))
     pygame.display.set_caption(SETTINGS['caption'])
     clock = pygame.time.Clock()
     
